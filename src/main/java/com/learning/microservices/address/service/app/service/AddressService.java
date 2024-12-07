@@ -1,9 +1,10 @@
 package com.learning.microservices.address.service.app.service;
 
 import com.learning.microservices.address.service.app.dao.AddressDao;
-import com.learning.microservices.address.service.app.mapper.AddressMapper;
+import com.learning.microservices.address.service.app.mapper.AddressRequest;
+import com.learning.microservices.address.service.app.mapper.AddressResponse;
 import com.learning.microservices.address.service.app.model.Address;
-import org.modelmapper.ModelMapper;
+import com.learning.microservices.address.service.app.util.AddressMapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +21,16 @@ public class AddressService {
     private AddressDao addressDao;
 
     @Autowired
-    private ModelMapper modelMapper;
+    private AddressMapperUtil addressMapperUtil;
 
-    public ResponseEntity<List<AddressMapper>> getAllAddresses() {
-        List<AddressMapper> allAddressesList = new ArrayList<>();
+
+    public ResponseEntity<List<AddressResponse>> getAllAddresses() {
+        List<AddressResponse> allAddressesList = new ArrayList<>();
 
         try {
             for (Address address : addressDao.findAll()) {
-                AddressMapper addressMapper = modelMapper.map(address, AddressMapper.class);
-                allAddressesList.add(addressMapper);
+                AddressResponse addressResponse = addressMapperUtil.mapToResponseMapper(address);
+                allAddressesList.add(addressResponse);
             }
 
             return new ResponseEntity<>(allAddressesList, HttpStatus.OK);
@@ -39,16 +41,17 @@ public class AddressService {
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    public ResponseEntity<AddressMapper> getAddressById(Integer id) {
+
+    public ResponseEntity<AddressResponse> getAddressById(Integer id) {
 
         try {
             Optional<Address> address = addressDao.findById(id);
 
-            if (address.isPresent()) {
-                AddressMapper addressMapper = modelMapper.map(address, AddressMapper.class);
-                return new ResponseEntity<>(addressMapper, HttpStatus.OK);
-            } else {
+            if (address.isEmpty()) {
                 return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            } else {
+                AddressResponse addressResponse = addressMapperUtil.mapToResponseMapper(address.orElse(null));
+                return new ResponseEntity<>(addressResponse, HttpStatus.OK);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,9 +60,10 @@ public class AddressService {
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    public ResponseEntity<String> addOrUpdateAddress(AddressMapper addressMapper) {
 
-        Address address = modelMapper.map(addressMapper, Address.class);
+    public ResponseEntity<String> addOrUpdateAddress(AddressRequest addressRequest) {
+
+        Address address = addressMapperUtil.mapToRequestMapper(addressRequest);
         try {
             addressDao.save(address);
             return new ResponseEntity<>("Address saved successfully", HttpStatus.CREATED);
@@ -67,19 +71,25 @@ public class AddressService {
             e.printStackTrace();
         }
 
-        return new ResponseEntity<>("An error occured while saving address", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("An error occurred while saving address", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     public ResponseEntity<String> deleteAddress(Integer id) {
 
         try {
-            addressDao.deleteById(id);
-            return new ResponseEntity<>("Address with id " + id + " deleted successfully", HttpStatus.OK);
+
+            if (addressDao.existsById(id)) {
+                addressDao.deleteById(id);
+                return new ResponseEntity<>("Address with id " + id + " deleted successfully", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Address with id " + id + " does not exists", HttpStatus.NOT_FOUND);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return new ResponseEntity<>("An error occured while deleting address of emp id: " + id , HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("An error occurred while deleting address of emp id: " + id , HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

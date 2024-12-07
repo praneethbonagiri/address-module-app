@@ -1,6 +1,7 @@
 package com.learning.microservices.address.service.app.controller;
 
-import com.learning.microservices.address.service.app.mapper.AddressMapper;
+import com.learning.microservices.address.service.app.mapper.AddressRequest;
+import com.learning.microservices.address.service.app.mapper.AddressResponse;
 import com.learning.microservices.address.service.app.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,18 +16,18 @@ public class AddressController {
     private AddressService addressService;
 
     @GetMapping("/addresses")
-    public ResponseEntity<List<AddressMapper>> getAllAddresses() {
+    public ResponseEntity<List<AddressResponse>> getAllAddresses() {
         return addressService.getAllAddresses();
     }
 
     @GetMapping("/address/{empId}")
-    public ResponseEntity<AddressMapper> getAddressByEmpId(@PathVariable("empId") Integer id) {
+    public ResponseEntity<AddressResponse> getAddressByEmpId(@PathVariable("empId") Integer id) {
         return addressService.getAddressById(id);
     }
 
     @PostMapping("/insertAddress")
-    public ResponseEntity<String> insertOrUpdateAddress(@RequestBody AddressMapper addressMapper) {
-        return addressService.addOrUpdateAddress(addressMapper);
+    public ResponseEntity<String> insertOrUpdateAddress(@RequestBody AddressRequest addressRequest) {
+        return addressService.addOrUpdateAddress(addressRequest);
     }
 
     @DeleteMapping("/deleteAddress/{empId}")

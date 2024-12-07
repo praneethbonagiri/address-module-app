@@ -1,18 +1,17 @@
 package com.learning.microservices.address.service.app.mapper;
 
-public class AddressMapper {
-
+public class AddressRequest {
     private String doorNumber;
     private String streetName;
     private String city;
     private Integer zipCode;
     private Integer empId;
 
-    public AddressMapper() {
+    public AddressRequest() {
 
     }
 
-    public AddressMapper(String doorNumber, String streetName, String city, Integer zipCode, Integer empId) {
+    public AddressRequest(String doorNumber, String streetName, String city, Integer zipCode, Integer empId) {
         this.doorNumber = doorNumber;
         this.streetName = streetName;
         this.city = city;
