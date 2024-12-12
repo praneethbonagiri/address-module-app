@@ -21,7 +21,7 @@ public class AddressController {
     }
 
     @GetMapping("/address/{empId}")
-    public ResponseEntity<AddressResponse> getAddressByEmpId(@PathVariable("empId") Integer id) {
+    public ResponseEntity<AddressResponse> getAddressById(@PathVariable("empId") Integer id) {
         return addressService.getAddressById(id);
     }
 
@@ -30,8 +30,8 @@ public class AddressController {
         return addressService.addOrUpdateAddress(addressRequest);
     }
 
-    @DeleteMapping("/deleteAddress/{empId}")
-    public ResponseEntity<String> deleteAddress(@PathVariable("empId") Integer id) {
+    @DeleteMapping("/deleteAddress/{addId}")
+    public ResponseEntity<String> deleteAddress(@PathVariable("addId") Integer id) {
         return addressService.deleteAddress(id);
     }
 

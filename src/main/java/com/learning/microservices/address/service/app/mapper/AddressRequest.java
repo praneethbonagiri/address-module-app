@@ -5,18 +5,18 @@ public class AddressRequest {
     private String streetName;
     private String city;
     private Integer zipCode;
-    private Integer empId;
+    private Integer addId;
 
     public AddressRequest() {
 
     }
 
-    public AddressRequest(String doorNumber, String streetName, String city, Integer zipCode, Integer empId) {
+    public AddressRequest(String doorNumber, String streetName, String city, Integer zipCode, Integer addId) {
         this.doorNumber = doorNumber;
         this.streetName = streetName;
         this.city = city;
         this.zipCode = zipCode;
-        this.empId = empId;
+        this.addId = addId;
     }
 
     public String getDoorNumber() {
@@ -51,11 +51,11 @@ public class AddressRequest {
         this.zipCode = zipCode;
     }
 
-    public Integer getEmpId() {
-        return empId;
+    public Integer getAddId() {
+        return addId;
     }
 
-    public void setEmpId(Integer empId) {
-        this.empId = empId;
+    public void setAddId(Integer addId) {
+        this.addId = addId;
     }
 }

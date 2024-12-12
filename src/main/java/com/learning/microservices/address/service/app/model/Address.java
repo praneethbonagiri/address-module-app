@@ -11,18 +11,18 @@ public class Address {
     private String city;
     private Integer zip;
     @Id
-    private Integer empId;
+    private Integer addId;
 
     public Address() {
 
     }
 
-    public Address(String doorNo, String street, String city, Integer zip, Integer empId) {
+    public Address(String doorNo, String street, String city, Integer zip, Integer addId) {
         this.doorNo = doorNo;
         this.street = street;
         this.city = city;
         this.zip = zip;
-        this.empId = empId;
+        this.addId = addId;
     }
 
     public String getDoorNo() {
@@ -57,11 +57,11 @@ public class Address {
         this.zip = zip;
     }
 
-    public Integer getEmpId() {
-        return empId;
+    public Integer getAddId() {
+        return addId;
     }
 
-    public void setEmpId(Integer empId) {
-        this.empId = empId;
+    public void setAddId(Integer addId) {
+        this.addId = addId;
     }
 }

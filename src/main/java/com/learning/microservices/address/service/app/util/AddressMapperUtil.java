@@ -41,7 +41,7 @@ public class AddressMapperUtil {
                 mapper.map(AddressRequest::getStreetName, Address::setStreet);
                 mapper.map(AddressRequest::getCity, Address::setCity);
                 mapper.map(AddressRequest::getZipCode, Address::setZip);
-                mapper.map(AddressRequest::getEmpId, Address::setEmpId);
+                mapper.map(AddressRequest::getAddId, Address::setAddId);
             });
         }
 
